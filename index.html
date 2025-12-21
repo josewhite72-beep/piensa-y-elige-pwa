@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Piensa y Elige — Flip Book Interactivo (PWA)</title>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#2a7ade"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <meta name="description" content="Historias interactivas con decisiones, finales alternativos y modo docente. Funciona offline como PWA."/>
+</head>
+<body>
+  <header>
+    <div class="brand">📖 Piensa y Elige — Flip Book Interactivo (PWA)</div>
+    <div class="nav">
+      <button class="btn" id="homeBtn">Inicio</button>
+      <button class="btn" id="storiesBtn">Historias</button>
+      <button class="btn" id="docenteBtn">Modo Docente</button>
+      <button class="btn" id="settingsBtn">Configuración</button>
+      <button class="btn primary" id="installBtn" disabled>Instalar App</button>
+    </div>
+  </header>
+  <main class="container">
+    <section id="view-home" class="card">
+      <h1 class="title">Bienvenida</h1>
+      <p>Explora historias interactivas con decisiones y finales alternativos para fortalecer la lectura comprensiva, los valores y el pensamiento crítico. Funciona offline e instalable como PWA.</p>
+      <div class="toolbar">
+        <button class="btn primary" id="startExploring">Explorar Historias</button>
+        <span class="badge">PWA</span>
+        <span class="badge">Offline</span>
+        <span class="badge">Modo Docente</span>
+      </div>
+    </section>
+    <section id="view-stories" class="hidden">
+      <div class="grid" id="storiesGrid"></div>
+    </section>
+    <section id="view-reader" class="hidden">
+      <div class="card">
+        <div class="toolbar">
+          <div id="storyHeader"></div>
+          <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+            <label>Fuente</label>
+            <input type="range" min="15" max="22" value="16" class="slider" id="fontSlider"/>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div style="flex:1;">
+            <div>Indicador de Valores</div>
+            <div class="valuebar"><div class="valuefill" id="valueFill"></div></div>
+          </div>
+          <div class="progress" id="progressText">Página 1 / 1</div>
+        </div>
+        <div class="book-shell"><div class="book" id="book"></div></div>
+        <div class="footerbar" style="display:flex; justify-content:space-between; margin-top:8px;">
+          <div style="display:flex; gap:8px;">
+            <button class="btn" id="prevPageBtn">⬅️ Atrás</button>
+            <button class="btn primary" id="nextPageBtn">Siguiente ➡️</button>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn" id="retryBtn" disabled>Reintentar</button>
+            <button class="btn" id="docQuestionsBtn">Preguntas</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="view-docente" class="hidden card">
+      <h2 class="title">Modo Docente</h2>
+      <p>Usa estas preguntas para guiar el debate al finalizar cada historia.</p>
+      <div id="docenteList"></div>
+    </section>
+    <section id="view-settings" class="hidden card">
+      <h2 class="title">Configuración</h2>
+      <p>Esta app funciona offline gracias a Service Worker. Puedes instalarla desde el botón “Instalar App”.</p>
+    </section>
+  </main>
+  <script src="js/app.js"></script>
+  <script>
+    // Registro optimizado del Service Worker con ruta relativa y logs
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker registrado con éxito"))
+        .catch(err => console.log("Error al registrar el Service Worker", err));
+    }
+
+    // Código para instalación PWA
+    let deferredPrompt;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById("installBtn");
+      if (installBtn) installBtn.disabled = false;
+    });
+
+    document.getElementById("installBtn").addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      }
+    });
+  </script>
+</body>
+</html>
