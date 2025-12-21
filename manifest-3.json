@@ -1,0 +1,23 @@
+{
+  "name": "Piensa y Elige — Flip Book Interactivo",
+  "short_name": "Piensa y Elige",
+  "description": "Historias interactivas tipo flip book con decisiones y finales alternativos. Funciona offline e instalable como PWA.",
+  "start_url": "/Piensa_y_Elige_PWA/index.html",
+  "scope": "/Piensa_y_Elige_PWA/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2a7ade",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
